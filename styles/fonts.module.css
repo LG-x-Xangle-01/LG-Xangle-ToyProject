@@ -1,0 +1,14 @@
+.notoSansKR400 {
+  font-family: var(--noto-sans-kr);
+  font-weight: 400;
+}
+
+.notoSansKR500 {
+  font-family: var(--noto-sans-kr);
+  font-weight: 500;
+}
+
+.notoSansKR700 {
+  font-family: var(--noto-sans-kr);
+  font-weight: 700;
+}
