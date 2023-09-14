@@ -20,4 +20,15 @@ model User {
   login_type      String
   auth            String    @unique
   count           Int
+  historys         History[]
+}
+
+model History{
+  id              Int       @default(autoincrement()) @id
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  userId          Int
+  user            User      @relation(fields: [userId], references: [id])
+  imgurl          Int
+  result          Boolean
 }
