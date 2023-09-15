@@ -33,15 +33,6 @@ const Check = () => {
     // console.log(`${process.env.NEXT_PUBLIC_BACK_URL}/api/history/`);
 
     try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACK_URL}/api/history/`,
-        {
-          userId: account.id,
-          result: bool,
-          imgurl: selectedImage,
-        }
-      );
-
       if (bool === true) setResult(1);
       else setResult(2);
       setRegisterStep(3);
@@ -123,14 +114,16 @@ const Check = () => {
     };
 
     setSelectedImage(URL.createObjectURL(file));
+    console.log( 'url : ' , URL.createObjectURL(file) ) ;
     setRegisterStep(2);
   };
 
   useEffect(() => {
+    if( account ){
     setRegisterStep(1);
     console.log('account : ', account);
-    console.log('처음 레지스터');
-  }, []);
+  }
+  }, [account]);
   return (
     <>
       <TopNavigationBar router={router} />

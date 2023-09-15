@@ -13,7 +13,7 @@ export default function Home() {
     // <Container>
     <>
       <div
-        style={{
+        style={{ 
           marginTop: "110px",
           display: "flex",
           flexDirection: "column",

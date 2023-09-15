@@ -8,6 +8,7 @@ import axios from "axios";
 import styled from "styled-components";
 import TopNavigationBar from "../components/TopNavigationBar";
 import { TopNavigationBarPlaceholder } from "../placeholder";
+import Link from "next/link";
 
 const History = () => {
   const { account, setAccount, web3 } = useContext(AppContext);
@@ -19,34 +20,38 @@ const History = () => {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACK_URL}/api/history?signeky=${account.id}`
+        `${process.env.NEXT_PUBLIC_BACK_URL}/api/history?signkey=${account.id}`
       );
 
-      setData(response.data);
+      setData(response.data.res_h);
       setIsLoading(false);
-      console.log("data :", response.data);
+      console.log("data :", response.data.res_h);
     } catch (error) {
       console.error(error);
     }
   };
 
   useEffect(() => {
+    if( account ) { 
     console.log("account : ", account);
     get_history_data();
-  }, []);
+  }
+  }, [account]);
 
   // return ({isLoading == true ? <div> Loading ~ </div> : <div> 아아 </div>});
   return (
-    // <>
-    //   <TopNavigationBar />
-    //   <TopNavigationBarPlaceholder />
-    //   <PhotoGrid>
-    //     {Array.from({ length: 12 }, (_, index) => (
-    //       <PhotoBlock key={index}>{index + 1}</PhotoBlock>
-    //     ))}
-    //   </PhotoGrid>
-    // </>
-    <PhotoDetail />
+    <>
+      <TopNavigationBar />
+      <TopNavigationBarPlaceholder />
+      <PhotoGrid>
+        {data?.map((v, i) => (
+          <Link href={`/detail/${v.id}`} key={i} className="w-[100px] h-[100px] flex justify-center">
+            <div classname="text-[40px]"> {v.imgurl} </div>
+          </Link>
+      ))}
+      </PhotoGrid>
+    </>
+    // <PhotoDetail />
   );
 
   // return (
@@ -76,42 +81,32 @@ const PhotoGrid = styled.div`
   gap: 16px;
 `;
 
-const PhotoBlock = styled.div`
-  width: 100px;
-  height: 100px;
-  background-color: lightgray;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 24px;
-`;
-
 /////////
-const PhotoDetail = () => {
-  return (
-    <div>
-      <TopNavigationBar />
-      <TopNavigationBarPlaceholder />
-      <HistoryTime>2023/9/8 23:11</HistoryTime>
-      <HistoryVerification>
-        <img src="/history/blueCheckHistory.svg" alt="bluecheck" width={34} />
-        <VerifiedBadge isOrigin={true}>원본 인증됨</VerifiedBadge>
-      </HistoryVerification>
-      <HistoryImage src="/history/IMG_5517.JPG" />
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          width: "312px",
-          marginTop: "20px",
-        }}
-      >
-        <ListButton>목록</ListButton>
-        <DownloadButton>다운로드</DownloadButton>
-      </div>
-    </div>
-  );
-};
+// const PhotoDetail = () => {
+//   return (
+//     <div>
+//       <TopNavigationBar />
+//       <TopNavigationBarPlaceholder />
+//       <HistoryTime>2023/9/8 23:11</HistoryTime>
+//       <HistoryVerification>
+//         <img src="/history/blueCheckHistory.svg" alt="bluecheck" width={34} />
+//         <VerifiedBadge isOrigin={true}>원본 인증됨</VerifiedBadge>
+//       </HistoryVerification>
+//       <HistoryImage src="/history/IMG_5517.JPG" />
+//       <div
+//         style={{
+//           display: "flex",
+//           justifyContent: "space-between",
+//           width: "312px",
+//           marginTop: "20px",
+//         }}
+//       >
+//         <ListButton>목록</ListButton>
+//         <DownloadButton>다운로드</DownloadButton>
+//       </div>
+//     </div>
+//   );
+// };
 
 const HistoryTime = styled.div`
   width: 320px;

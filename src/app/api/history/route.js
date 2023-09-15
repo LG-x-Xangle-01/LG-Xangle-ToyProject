@@ -1,3 +1,4 @@
+import { sign } from "jsonwebtoken";
 import prisma from "../../lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -6,7 +7,7 @@ export const POST = async (req) => {
   try {
     const { userId, imgurl, result } = await req.json();
 
-    console.log(userId, imgurl, result);
+    // console.log(userId, imgurl, result);
 
     const res = await prisma.history.create({
       data: {
@@ -29,8 +30,9 @@ export const POST = async (req) => {
 export const GET = async (req) => {
   try {
     const { searchParams } = new URL(req.url);
-    const signedToken = searchParams.get("signkey");
-    const id = searchParams.get("hid");
+    let signedToken = searchParams.get("signkey");
+    let id = searchParams.get("hid");
+    let res_h ;
 
     if (!signedToken && !id) {
       return NextResponse.json(
@@ -44,14 +46,16 @@ export const GET = async (req) => {
       );
     }
 
-    if (!id) {
+    if ( signedToken ) {
+      signedToken = parseInt( signedToken ) ;
       const user = await prisma.user.findFirst({
         where: {
-          auth: signedToken,
+          id: signedToken,
         },
       });
 
       if (!user) {
+
         return NextResponse.json(
           {
             ok: false,
@@ -63,19 +67,22 @@ export const GET = async (req) => {
         );
       }
 
-      const res_h = await prisma.history.findMany({
+      res_h = await prisma.history.findMany({
         where: {
           userId: user.id,
         },
         select: {
           imgurl: true,
           result: true,
+          id : true ,
         },
       });
     }
 
-    if (!searchParams) {
-      const res_h = await prisma.history.findMany({
+    if ( id ) {
+      id = parseInt( id ) ;
+
+      res_h = await prisma.history.findMany({
         where: {
           id: id,
         },

@@ -92,7 +92,6 @@ function SignInButton() {
       style={{ marginTop: '50px' }}
       onClick={async () => {
         await signIn();
-        router.push('/register');
       }}
     >
       Social LogIn
