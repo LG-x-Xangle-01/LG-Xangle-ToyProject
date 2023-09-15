@@ -1,10 +1,13 @@
-import { prisma } from '@/app/lib/prisma';
-import { NextRequest, NextResponse } from 'next/server';
+import { sign } from "jsonwebtoken";
+import prisma from "../../lib/prisma";
+import { NextRequest, NextResponse } from "next/server";
 
 // history 생성
 export const POST = async (req) => {
   try {
     const { userId, imgurl, result } = await req.json();
+
+    // console.log(userId, imgurl, result);
 
     const res = await prisma.history.create({
       data: {
@@ -27,13 +30,15 @@ export const POST = async (req) => {
 export const GET = async (req) => {
   try {
     const { searchParams } = new URL(req.url);
-    const signedToken = searchParams.get('signkey');
+    let signedToken = searchParams.get("signkey");
+    let id = searchParams.get("hid");
+    let res_h ;
 
-    if (!signedToken) {
+    if (!signedToken && !id) {
       return NextResponse.json(
         {
           ok: false,
-          error: 'Not exist token.',
+          error: "Not exist token.",
         },
         {
           status: 400,
@@ -41,33 +46,48 @@ export const GET = async (req) => {
       );
     }
 
-    const user = await prisma.user.findFirst({
-      where: {
-        auth: signedToken,
-      },
-    });
-
-    if (!user) {
-      return NextResponse.json(
-        {
-          ok: false,
-          error: 'Not exist token.',
+    if ( signedToken ) {
+      signedToken = parseInt( signedToken ) ;
+      const user = await prisma.user.findFirst({
+        where: {
+          id: signedToken,
         },
-        {
-          status: 400,
-        }
-      );
+      });
+
+      if (!user) {
+
+        return NextResponse.json(
+          {
+            ok: false,
+            error: "Not exist token.",
+          },
+          {
+            status: 400,
+          }
+        );
+      }
+
+      res_h = await prisma.history.findMany({
+        where: {
+          userId: user.id,
+        },
+        select: {
+          imgurl: true,
+          result: true,
+          id : true ,
+        },
+      });
     }
 
-    const res_h = await prisma.history.findMany({
-      where: {
-        userId: user.id,
-      },
-      select: {
-        imgurl: true,
-        result: true,
-      },
-    });
+    if ( id ) {
+      id = parseInt( id ) ;
+
+      res_h = await prisma.history.findMany({
+        where: {
+          id: id,
+        },
+      });
+    }
 
     return NextResponse.json({
       ok: true,
@@ -75,6 +95,6 @@ export const GET = async (req) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'An error occurred' });
+    res.status(500).json({ error: "An error occurred" });
   }
 };
