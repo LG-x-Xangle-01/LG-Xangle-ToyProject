@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useContext } from 'react';
-import { useParams } from 'next/navigation';
-import axios from 'axios';
-import { AppContext } from '../../layout';
-import TopNavigationBar from '../../components/TopNavigationBar';
-import { TopNavigationBarPlaceholder } from '../../placeholder';
+import React, { useState, useEffect, useContext } from "react";
+import { useParams } from "next/navigation";
+import axios from "axios";
+import { AppContext } from "../../layout";
+import TopNavigationBar from "../../components/TopNavigationBar";
+import { TopNavigationBarPlaceholder } from "../../placeholder";
 import styled from "styled-components";
 import Link from "next/link";
 
@@ -19,7 +19,7 @@ const History = () => {
   const get_history_data = async () => {
     try {
       setIsLoading(true);
-      console.log('loading', id);
+      console.log("loading", id);
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_BACK_URL}/api/history?hid=${id}`
       );
@@ -37,35 +37,34 @@ const History = () => {
   }, []);
 
   // isLoading이 true일 때 로딩 화면을, 그렇지 않으면 컨텐츠를 보여줍니다.
-return isLoading ? (
-  <div> Loading ~ </div>
-) : (
-  <div>
-    <TopNavigationBar />
-    
-    <TopNavigationBarPlaceholder />
-    <HistoryTime>등록 시간 : {data.createdAt}</HistoryTime>
-    <HistoryVerification>
-      <div src="/history/blueCheckHistory.svg" alt="bluecheck" width={34} />
-      <VerifiedBadge isOrigin={data.bool}>{ data.bool == true ? '원본 이미지' : '원본 이미지' } </VerifiedBadge>
-    </HistoryVerification>
-    <div className='mx-auto w-[100px] text-[30px]' >{data.imgurl}</div>
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        width: "312px",
-        marginTop: "20px",
-      }}
-    >
-      
-      <Link href='/history'>
-      <ListButton>목록</ListButton>
-      </Link>
+  return isLoading ? (
+    <div> Loading ~ </div>
+  ) : (
+    <div>
+      <TopNavigationBar />
+      <TopNavigationBarPlaceholder />
+      <HistoryTime>등록 시간 : {data.createdAt}</HistoryTime>
+      <HistoryVerification>
+        <div src="/history/blueCheckHistory.svg" alt="bluecheck" width={34} />
+        <VerifiedBadge isOrigin={data.bool}>
+          {data.bool == true ? "원본 이미지" : "원본 이미지"}{" "}
+        </VerifiedBadge>
+      </HistoryVerification>
+      <div className="mx-auto w-[100px] text-[30px]">{data.imgurl}</div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          width: "312px",
+          marginTop: "20px",
+        }}
+      >
+        <Link href="/history">
+          <ListButton>목록</ListButton>
+        </Link>
+      </div>
     </div>
-  </div>
-);
-
+  );
 };
 
 const HistoryTime = styled.div`
@@ -105,7 +104,6 @@ const VerifiedBadge = styled.div`
   background-color: ${(props) => (props.isOrigin ? "#2B9BDA" : "#DA792D")};
   color: white;
 `;
-
 
 const ListButton = styled.button`
   width: 148px;
@@ -171,6 +169,5 @@ const ImageBlock1 = styled.div`
   background-size: cover;
   background-position: center;
 `;
-
 
 export default History;

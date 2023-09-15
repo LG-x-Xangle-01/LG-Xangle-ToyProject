@@ -32,10 +32,10 @@ const History = () => {
   };
 
   useEffect(() => {
-    if( account ) { 
-    console.log("account : ", account);
-    get_history_data();
-  }
+    if (account) {
+      console.log("account : ", account);
+      get_history_data();
+    }
   }, [account]);
 
   // return ({isLoading == true ? <div> Loading ~ </div> : <div> 아아 </div>});
@@ -45,32 +45,17 @@ const History = () => {
       <TopNavigationBarPlaceholder />
       <PhotoGrid>
         {data?.map((v, i) => (
-          <Link href={`/detail/${v.id}`} key={i} className="w-[100px] h-[100px] flex justify-center">
+          <Link
+            href={`/detail/${v.id}`}
+            key={i}
+            className="w-[100px] h-[100px] flex justify-center"
+          >
             <div classname="text-[40px]"> {v.imgurl} </div>
           </Link>
-      ))}
+        ))}
       </PhotoGrid>
     </>
-    // <PhotoDetail />
   );
-
-  // return (
-  //   <>
-  //     <TopNavigationBar />
-  //     <TopNavigationBarPlaceholder />
-  //     <PhotoGrid>
-  //       {Array.from({ length: 12 }, (_, index) => {
-  //         if (index === 0) {
-  //           return <ImageBlock key={index} />;
-  //         }
-  //         if (index === 1) {
-  //           return <ImageBlock1 key={index} />;
-  //         }
-  //         return <PhotoBlock key={index}></PhotoBlock>;
-  //       })}
-  //     </PhotoGrid>
-  //   </>
-  // );
 };
 
 export default History;
@@ -80,33 +65,6 @@ const PhotoGrid = styled.div`
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
 `;
-
-/////////
-// const PhotoDetail = () => {
-//   return (
-//     <div>
-//       <TopNavigationBar />
-//       <TopNavigationBarPlaceholder />
-//       <HistoryTime>2023/9/8 23:11</HistoryTime>
-//       <HistoryVerification>
-//         <img src="/history/blueCheckHistory.svg" alt="bluecheck" width={34} />
-//         <VerifiedBadge isOrigin={true}>원본 인증됨</VerifiedBadge>
-//       </HistoryVerification>
-//       <HistoryImage src="/history/IMG_5517.JPG" />
-//       <div
-//         style={{
-//           display: "flex",
-//           justifyContent: "space-between",
-//           width: "312px",
-//           marginTop: "20px",
-//         }}
-//       >
-//         <ListButton>목록</ListButton>
-//         <DownloadButton>다운로드</DownloadButton>
-//       </div>
-//     </div>
-//   );
-// };
 
 const HistoryTime = styled.div`
   width: 320px;

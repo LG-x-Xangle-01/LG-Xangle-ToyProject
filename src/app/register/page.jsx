@@ -17,7 +17,7 @@ import axios from "axios";
 const c_add = "0x525C1af37185CC58c68D5a57dC38eA7900c378e3";
 
 const Register = () => {
-  const [isLoading , setIsLoading] = useState(false) ;
+  const [isLoading, setIsLoading] = useState(false);
   const { account, setAccount, web3 } = useContext(AppContext);
   const [print, setPrint] = useState(0);
   const rpcUrl = process.env.NEXT_PUBLIC_RPC_URL;
@@ -86,9 +86,8 @@ const Register = () => {
   };
 
   const register = async () => {
-    setIsLoading( true ) ;
+    setIsLoading(true);
     try {
-      
       // destination_add : NFT 받을 주소
       const register = {
         to: c_add,
@@ -112,29 +111,28 @@ const Register = () => {
       const ev = await res.wait();
       console.log(`Transaction hash: ${ev?.transactionHash ?? null}`);
       let count = await c_a2.methods.get_count().call();
-      count = Number( count ) ;
+      count = Number(count);
       setPrint(Number(count));
       downloadImage(selectedImage, "modified_image.png");
       setRegisterStep(3);
 
-      console.log( 'db record' ) ;
+      console.log("db record");
 
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BACK_URL}/api/history/`,
         {
           userId: account.id,
-          result: true ,
-          imgurl: String(count) ,
+          result: true,
+          imgurl: String(count),
         }
       );
 
-      console.log( 'db complete' ) ;
-
+      console.log("db complete");
     } catch (error) {
       console.log(error);
     }
 
-    setIsLoading( false ) ;
+    setIsLoading(false);
   };
 
   const del = () => {
@@ -237,7 +235,7 @@ const Register = () => {
 
   return (
     <>
-      <TopNavigationBar router={router} />
+      <TopNavigationBar />
       <TopNavigationBarPlaceholder />
       {registerStep === 2 && <Title>이 사진을 등록할까요?</Title>}
       <div className="flex justify-center items-center  h-screen">
@@ -262,41 +260,45 @@ const Register = () => {
               alignItems: "center",
             }}
           >
-
-{isLoading ? (
-  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-  
-  <img src="https://github.com/arypte/toy_project_1/blob/main/1.png?raw=true" ></img>
-  </div>
-) : (
-  <>
-    {selectedImage && (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <UploadedImage src={selectedImage} alt="Uploaded" />
-      </div>
-    )}
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        width: "312px",
-        marginTop: "20px",
-      }}
-    >
-      <RemoveButton onClick={register}>원본 등록</RemoveButton>
-      {print !== 0 ? <div>{print}</div> : null}
-      <RegisterButton onClick={del}>이미지 제거</RegisterButton>
-    </div>
-  </>
-)}
+            {isLoading ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "100vh",
+                }}
+              >
+                <img src="https://github.com/arypte/toy_project_1/blob/main/1.png?raw=true"></img>
+              </div>
+            ) : (
+              <>
+                {selectedImage && (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <UploadedImage src={selectedImage} alt="Uploaded" />
+                  </div>
+                )}
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    width: "312px",
+                    marginTop: "20px",
+                  }}
+                >
+                  <RemoveButton onClick={register}>원본 등록</RemoveButton>
+                  {print !== 0 ? <div>{print}</div> : null}
+                  <RegisterButton onClick={del}>이미지 제거</RegisterButton>
+                </div>
+              </>
+            )}
           </div>
-            
         ) : (
           <div
             style={{

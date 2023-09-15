@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useContext } from 'react';
-import { ethers } from 'ethers';
-import { AppContext } from '../layout';
-import c_abi from '../c_abi.json';
-import styled from 'styled-components';
-import { useRef } from 'react';
-import TopNavigationBar from '../components/TopNavigationBar';
-import { useRouter } from 'next/navigation';
-import { TopNavigationBarPlaceholder } from '../placeholder';
-import { registerStepState } from '../states';
-import { useRecoilState } from 'recoil';
-import axios from 'axios';
+import React, { useState, useEffect, useContext } from "react";
+import { ethers } from "ethers";
+import { AppContext } from "../layout";
+import c_abi from "../c_abi.json";
+import styled from "styled-components";
+import { useRef } from "react";
+import TopNavigationBar from "../components/TopNavigationBar";
+import { useRouter } from "next/navigation";
+import { TopNavigationBarPlaceholder } from "../placeholder";
+import { registerStepState } from "../states";
+import { useRecoilState } from "recoil";
+import axios from "axios";
 
-const c_add = '0x525C1af37185CC58c68D5a57dC38eA7900c378e3';
+const c_add = "0x525C1af37185CC58c68D5a57dC38eA7900c378e3";
 
 const Check = () => {
   const { account, setAccount, web3 } = useContext(AppContext);
@@ -52,8 +52,8 @@ const Check = () => {
   };
 
   const getImagePixelColor = (imageData) => {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
 
     canvas.width = imageData.width;
     canvas.height = imageData.height;
@@ -85,7 +85,7 @@ const Check = () => {
   const onChangeImageFile = (e) => {
     if (!e.target.files) return;
 
-    const crypto = require('crypto');
+    const crypto = require("crypto");
     const file = e.target.files[0];
 
     const reader = new FileReader();
@@ -95,7 +95,7 @@ const Check = () => {
       if (event.target && event.target.result) {
         const fileData = event.target.result;
         const fileBuffer = Buffer.from(fileData);
-        const ab = crypto.createHash('sha512').update(fileBuffer).digest('hex');
+        const ab = crypto.createHash("sha512").update(fileBuffer).digest("hex");
 
         const img = new Image();
         img.src = event.target.result;
@@ -107,26 +107,26 @@ const Check = () => {
           console.log(temp);
         };
 
-        console.log('hash : ', ab);
+        console.log("hash : ", ab);
         setHash(ab);
         setImageFile(file);
       }
     };
 
     setSelectedImage(URL.createObjectURL(file));
-    console.log( 'url : ' , URL.createObjectURL(file) ) ;
+    console.log("url : ", URL.createObjectURL(file));
     setRegisterStep(2);
   };
 
   useEffect(() => {
-    if( account ){
-    setRegisterStep(1);
-    console.log('account : ', account);
-  }
+    if (account) {
+      setRegisterStep(1);
+      console.log("account : ", account);
+    }
   }, [account]);
   return (
     <>
-      <TopNavigationBar router={router} />
+      <TopNavigationBar />
       <TopNavigationBarPlaceholder />
       {registerStep == 2 && <Title>이 사진을 검증할까요?</Title>}
       {registerStep == 3 && <Title>검증을 완료했어요</Title>}
@@ -139,24 +139,24 @@ const Check = () => {
               accept="image/*"
               type="file"
               onChange={onChangeImageFile}
-              style={{ display: 'none' }}
+              style={{ display: "none" }}
             />
           </StyledUploadImageButton>
         ) : registerStep === 2 ? (
           <div
             className="flex flex-col"
             style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
             }}
           >
             {selectedImage && (
               <div
                 style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
                 <UploadedImage src={selectedImage} alt="Uploaded" />
@@ -164,10 +164,10 @@ const Check = () => {
             )}
             <div
               style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                width: '312px',
-                marginTop: '20px',
+                display: "flex",
+                justifyContent: "space-between",
+                width: "312px",
+                marginTop: "20px",
               }}
             >
               <VerifyButton onClick={handleClick}>원본 검증</VerifyButton>
@@ -179,17 +179,17 @@ const Check = () => {
             <div
               className="flex flex-col"
               style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
               }}
             >
               <div
                 style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
                 {result != 0 &&
@@ -202,7 +202,7 @@ const Check = () => {
               </div>
               <CompleteButton
                 onClick={() => {
-                  router.push('/');
+                  router.push("/");
                 }}
               >
                 확인
@@ -290,7 +290,7 @@ const VerifiedBadge = styled.div`
   align-items: center;
   text-align: center;
 
-  background-color: ${(props) => (props.isOrigin ? '#2B9BDA' : '#DA792D')};
+  background-color: ${(props) => (props.isOrigin ? "#2B9BDA" : "#DA792D")};
   color: white;
 `;
 

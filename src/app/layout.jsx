@@ -42,7 +42,7 @@ const Container = styled.div`
   background-color: #121212;
   width: 100%;
   color: white;
-  height: 100vh;
+  height: 105vh;
 
   display: flex;
   /* justify-content: center; */
